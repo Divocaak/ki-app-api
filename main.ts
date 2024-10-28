@@ -1,8 +1,11 @@
-export function add(a: number, b: number): number {
-  return a + b;
-}
+import { Application } from "https://deno.land/x/oak@v17.1.2/mod.ts";
+import router from "./routes.ts";
 
-// Learn more at https://docs.deno.com/runtime/manual/examples/module_metadata#concepts
-if (import.meta.main) {
-  console.log("Add 2 + 3 =", add(2, 3));
-}
+const app = new Application();
+
+app.use(router.routes());
+app.use(router.allowedMethods());
+
+const port = Number(Deno.env.get("PORT")) || 3000;
+console.log(`Server running on http://localhost:${port}`);
+await app.listen({ port: port });
